@@ -29,6 +29,7 @@ document.getElementById('item').addEventListener('keydown', function (e) {
 function addItem (value) {
   addItemToDOM(value);
   document.getElementById('item').value = '';
+  sendItemtoAPI(value);
 
   data.todo.push(value);
   dataObjectUpdated();
@@ -120,3 +121,24 @@ function addItemToDOM(text, completed) {
 
   list.insertBefore(item, list.childNodes[0]);
 }
+
+// Method for sending to-do item to API
+function sendItemtoAPI(item){
+  //console.log(item)
+  var req = new XMLHttpRequest();
+  req.open('POST', '/add');
+  req.setRequestHeader('Content-Type', 'application/json')
+  req.send(JSON.stringify({item: item}));
+
+  req.addEventListener('load', () => {
+    console.log(req.responseText)
+    console.log('request done');
+  })
+
+  req.addEventListener('error', () => {
+    console.log('something bad happened')
+    console.log(e)
+  })
+}
+
+
