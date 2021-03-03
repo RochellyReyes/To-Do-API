@@ -2,11 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 
+// const connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'Road2hire',
+//     database: 'todo'
+// });
+
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Road2hire',
-    database: 'todo'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
 });
 
 try {
@@ -21,10 +28,9 @@ const api = express();
 api.use(express.static(__dirname + '/public'));
 api.use(bodyParser.json());
 
-// api.get('/', (req, res) => {
-//     console.log(req);
-//     res.send('Hello World to-do-api')
-// });
+api.get('/debug', (req, res) => {
+    res.send(JSON.stringify(process.env));
+});
 
 api.get('/tasks', (req,res)=>{
     connection.query('SELECT * FROM tasks ORDER BY created DESC', (error, results) => {
