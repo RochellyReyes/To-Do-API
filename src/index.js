@@ -26,6 +26,8 @@ try {
 const api = express();
 //Middleware  https://expressjs.com/en/starter/static-files.html
 api.use(express.static(__dirname + '/public'));
+
+
 api.use(bodyParser.json());
 
 api.get('/debug', (req, res) => {
